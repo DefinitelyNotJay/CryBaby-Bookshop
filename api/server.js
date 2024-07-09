@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose, { Model } from "mongoose"
 import book from "./models/book.js";
+import User from "./models/User.js";
 
 
 const app = express();
