@@ -1,9 +1,7 @@
 import express from "express";
-import mongoose, { Model } from "mongoose"
-import book from "./models/book.js";
-import User from "./models/User.js";
-
-
+import mongoose, { Model } from "mongoose";
+import cookieParser from "cookie-parser"
+import cors from "cors"
 const app = express();
 
 const dbConnect = async () => {
@@ -15,6 +13,10 @@ const dbConnect = async () => {
   }
 };
 
+app.use(cookieParser())
+app.use(express.json())
+app.use(cors())
+
 app.get("/", (req, res) => {
   res.json({
     header: "to you",
@@ -23,6 +25,6 @@ app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
-app.listen("3000", () => {
+app.listen("3000", async () => {
   dbConnect();
 });

@@ -1,0 +1,14 @@
+[
+    {
+        "username": "tendou",
+        "email": "tendou@gmail.com",
+        "password": "123",
+        "role": "manager"
+    },
+    {
+        "username": "user",
+        "email": "user1@gmail.com",
+        "password": "123",
+        "role": "user"
+    }
+]
