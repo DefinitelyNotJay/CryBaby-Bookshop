@@ -3,7 +3,7 @@ import { registerHandler, registerSchema } from "../utils/register";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { Navigate } from "react-router-dom";
 
-export default function Register() {
+export default function Login() {
   const {
     register,
     handleSubmit,
@@ -20,7 +20,7 @@ export default function Register() {
         onSubmit={handleSubmit(registerHandler)}
         className="mx-auto bg-zinc-300 max-w-[400px] p-4 mt-52 rounded-lg"
       >
-        <h1 className="text-center text-2xl mb-4">ลงทะเบียน</h1>
+        <h1 className="text-center text-2xl mb-4">เข้าสู่ระบบ</h1>
         <div className="flex flex-col ">
           <label htmlFor="">ชื่อผู้ใช้งาน</label>
           <input
@@ -31,17 +31,6 @@ export default function Register() {
             {...register("username")}
           />
           <p className="text-red-500">{errors.username && errors.username.message}</p>
-        </div>
-        <div className="flex flex-col ">
-          <label htmlFor="">อีเมลล์</label>
-          <input
-            type="email"
-            placeholder="email"
-            name="email"
-            className="rounded-md px-2 py-1 mb-2"
-            {...register("email")}
-          />
-          <p className="text-red-500">{errors.email && errors.email.message}</p>
         </div>
         <div className="flex flex-col ">
           <label htmlFor="">รหัสผ่าน</label>
@@ -55,17 +44,6 @@ export default function Register() {
           <p className="text-red-500">
             {errors.password && errors.password.message}
           </p>
-        </div>
-        <div className="flex flex-col ">
-          <label htmlFor="">ตำแหน่ง</label>
-          <input
-            type="text"
-            placeholder="role"
-            name="role"
-            className="rounded-md px-2 py-1 mb-2"
-            {...register("role")}
-          />
-          <p className="text-red-500">{errors.role && errors.role.message}</p>
         </div>
         <button
           type="submit"
