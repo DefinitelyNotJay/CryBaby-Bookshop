@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
-import { registerHandler, registerSchema } from "../utils/register";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { Navigate } from "react-router-dom";
+import { loginSchema } from "../utils/register";
+import { loginHandler } from "../utils/authentication";
 
 export default function Login() {
   const {
@@ -10,14 +11,12 @@ export default function Login() {
     isSubmitting,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(loginSchema),
   });
   return (
     <div className="">
-      {/* {isSubmitSuccessful && <Navigate to={"/"} />} */}
-      {console.log(errors)}
       <form
-        onSubmit={handleSubmit(registerHandler)}
+        onSubmit={handleSubmit(loginHandler)}
         className="mx-auto bg-zinc-300 max-w-[400px] p-4 mt-52 rounded-lg"
       >
         <h1 className="text-center text-2xl mb-4">เข้าสู่ระบบ</h1>
