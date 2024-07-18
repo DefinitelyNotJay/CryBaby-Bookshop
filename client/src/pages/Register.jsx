@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { registerHandler, registerSchema } from "../utils/register";
+import { registerHandler, registerSchema } from "../utils/authentication";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { Navigate } from "react-router-dom";
 

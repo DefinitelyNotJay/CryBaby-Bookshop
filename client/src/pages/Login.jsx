@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { Navigate } from "react-router-dom";
-import { loginSchema } from "../utils/register";
-import { loginHandler } from "../utils/authentication";
+import { loginSchema, loginHandler } from "../utils/authentication";
 
 export default function Login() {
   const {
