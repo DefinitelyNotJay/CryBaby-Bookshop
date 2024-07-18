@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { axios } from 'axios';
+import axios from 'axios';
 
 export default function BookRegister() {
   const schema = z.object({
-    book_name: z.string().max(20),
+    name: z.string().max(20),
     description: z.string().nullable(),
     cost: z.coerce.number().min(1),
     author: z.string(),
@@ -13,7 +13,7 @@ export default function BookRegister() {
   });
 
   async function bookRegister(formData) {
-    await axios.post("http://localhost:3000/api/")
+    await axios.post("http://localhost:3000/api/book/create", formData)
   }
 
   const {
@@ -27,7 +27,7 @@ export default function BookRegister() {
 
   return (
     <section className="w-full flex bg-purple-300 p-12 h-[calc(100vh-144px)]">
-      <div className="w-7/12 bg-base h-full p-4 rounded-xl">
+      <div className="w-7/12 bg-base h-full p-4 rounded-l-xl">
         <div className="w-full h-full bg-white rounded-xl p-4">
           <h1 className="text-center text-xl font-semibold">
             ลงทะเบียนหนังสือ
@@ -38,10 +38,10 @@ export default function BookRegister() {
               <input
                 className="rounded-md px-2 py-1 mb-2 border bg-base"
                 type="text"
-                name="book_name"
-                {...register("book_name")}
+                name="name"
+                {...register("name")}
               />
-              {errors.book_name && errors.book_name.message}
+              {errors.name && errors.name.message}
             </div>
             <div className="ml-52">
               <label htmlFor="">คำอธิบาย: </label>
@@ -92,7 +92,14 @@ export default function BookRegister() {
           </form>
         </div>
       </div>
-      <div className="w-5/12 bg-base rounded-r-xl">d;asdjfaklsdfj</div>
+      <div className="w-5/12 bg-base rounded-r-xl p-4">
+        <div className="w-full h-full bg-white rounded-xl p-4">
+          <h1 className="text-center text-xl font-semibold">หนังสือที่เพิ่มล่าสุด</h1>
+          <div className="grid grid-cols-1 overflow-scroll">
+            
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

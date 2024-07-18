@@ -3,6 +3,7 @@ import mongoose, { Model } from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRoute from "./routes/authRoute.js";
+import bookRoute from "./routes/bookRoute.js"
 const app = express();
 
 const dbConnect = async () => {
@@ -14,16 +15,17 @@ const dbConnect = async () => {
   }
 };
 
-app.use(cookieParser());
-app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: true,
     credentials: true,
   })
 );
+app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/auth", authRoute);
+app.use("/api/book", bookRoute)
 
 app.listen("3000", async () => {
   dbConnect();

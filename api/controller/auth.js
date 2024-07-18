@@ -1,7 +1,11 @@
 import User from "../models/User.js";
 import * as jose from "jose";
 import bcryptjs from "bcryptjs";
-import { now } from "mongoose";
+import jwt from "jsonwebtoken";
+import { createError } from "../utils/error.js";
+
+const secretKey = ";lasdcv;cioxvjladnglaewhfiad;vml;adcnvnaklfds";
+const key = new TextEncoder().encode(secretKey);
 
 export const register = async (req, res, next) => {
   const registerData = req.body;
@@ -18,23 +22,9 @@ export const register = async (req, res, next) => {
   res.status(200).json("complete");
 };
 
-async function encrypt(payload, key) {
-  return await new jose.SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("1 hour from now on")
-    .sign(key);
-}
-
-async function decrypt(input, key) {
-  const { payload } = jose.jwtVerify(input, key, {
-    algorithms: ["HS256"],
-  });
-  return payload;
-}
-
 export const login = async (req, res, next) => {
   const data = req.body;
+
   const user = await User.findOne({ username: data.username });
   if (!user) {
     res.json("User not found!").status(500);
@@ -46,8 +36,18 @@ export const login = async (req, res, next) => {
     res.json("Wrong username or password!").status(500);
   }
 
-  const expired = new Date(Date.now() + 10 * 60000);
-  const session = await encrypt({ user, expired }, key);
+  const { email, role } = user;
 
-  res.cookie("session", session, { httpOnly: true }).status(200);
+  const token = jwt.sign({ email, role }, secretKey);
+  res
+    .cookie("token", token, { httpOnly: true })
+    .status(200)
+    .json({ email, role });
+};
+
+export const logout = async (req, res, next) => {
+  if (!req.cookies) {
+    next(createError("500", "You are not login yet."));
+  }
+  res.cookie("token", {}, { maxAge: -999 }).status(200).send("yes");
 };
