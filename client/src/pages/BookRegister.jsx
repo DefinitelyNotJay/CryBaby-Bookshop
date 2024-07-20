@@ -1,102 +1,50 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import axios from 'axios';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import BookRegisterForm from "../components/book-register-form";
+import Book from "../components/book";
 
 export default function BookRegister() {
-  const schema = z.object({
-    name: z.string().max(20),
-    description: z.string().nullable(),
-    cost: z.coerce.number().min(1),
-    author: z.string(),
-    edition: z.coerce.number(),
-  });
+  const [books, setBooks] = useState([]);
 
-  async function bookRegister(formData) {
-    await axios.post("http://localhost:3000/api/book/create", formData)
+  async function getAllBooks() {
+    await axios
+      .get("http://localhost:3000/api/book/all", {
+        withCredentials: true,
+      })
+      .then((books) => {
+        setBooks(books.data);
+      });
   }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    isSubmitting,
-  } = useForm({
-    resolver: zodResolver(schema),
-  });
+  useEffect(() => {
+    getAllBooks();
+  }, []);
 
   return (
-    <section className="w-full flex bg-purple-300 p-12 h-[calc(100vh-144px)]">
+    <section className="w-full flex  p-12 h-[calc(100vh-144px)]">
       <div className="w-7/12 bg-base h-full p-4 rounded-l-xl">
         <div className="w-full h-full bg-white rounded-xl p-4">
-          <h1 className="text-center text-xl font-semibold">
+          <h1 className="text-center text-xl font-semibold mb-4">
             ลงทะเบียนหนังสือ
           </h1>
-          <form onSubmit={handleSubmit(bookRegister)}>
-            <div className="ml-52">
-              <label htmlFor="">ชื่อหนังสือ: </label>
-              <input
-                className="rounded-md px-2 py-1 mb-2 border bg-base"
-                type="text"
-                name="name"
-                {...register("name")}
-              />
-              {errors.name && errors.name.message}
-            </div>
-            <div className="ml-52">
-              <label htmlFor="">คำอธิบาย: </label>
-              <input
-                className="rounded-md px-2 py-1 mb-2 border bg-base"
-                type="text"
-                name="description"
-                {...register("description")}
-              />
-              {errors.description && errors.description.message}
-            </div>
-            <div className="ml-52">
-              <label htmlFor="">ผู้แต่ง: </label>
-              <input
-                className="rounded-md px-2 py-1 mb-2 border bg-base"
-                type="text"
-                name="author"
-                {...register("author")}
-              />
-            </div>
-            <div className="ml-52">
-              <label htmlFor="">ราคา: </label>
-              <input
-                className="rounded-md px-2 py-1 mb-2 border bg-base"
-                type="number"
-                name="cost"
-                {...register("cost")}
-              />
-              {errors.cost && errors.cost.message}
-            </div>
-            <div className="ml-52">
-              <label htmlFor="">พิมพ์ครั้งที่: </label>
-              <input
-                defaultValue={1}
-                className="rounded-md px-2 py-1 mb-2 border bg-base"
-                type="number"
-                name="edition"
-                {...register("edition")}
-              />
-              {errors.edition && errors.edition.message}
-            </div>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-slate-100 rounded-md ml-52"
-            >
-              ยืนยัน
-            </button>
-          </form>
+          <BookRegisterForm />
         </div>
       </div>
       <div className="w-5/12 bg-base rounded-r-xl p-4">
-        <div className="w-full h-full bg-white rounded-xl p-4">
-          <h1 className="text-center text-xl font-semibold">หนังสือที่เพิ่มล่าสุด</h1>
-          <div className="grid grid-cols-1 overflow-scroll">
-            
+        <div className="w-full h-full bg-white rounded-xl p-4 overflow-scroll ">
+          <h1 className="text-center text-xl font-semibold">
+            หนังสือที่เพิ่มล่าสุด
+          </h1>
+          <div className="grid grid-cols-2 mt-4 justify-items-end ">
+            {books?.map((book) => (
+              <Book
+                key={book.id}
+                name={book.name}
+                author={book.author}
+                cost={book.cost}
+                edition={book.edition}
+              />
+            ))}
           </div>
         </div>
       </div>

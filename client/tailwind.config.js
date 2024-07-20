@@ -12,6 +12,9 @@ export default {
         base: "#e7e7e7",
       },
     },
+    fontFamily: {
+      "NotoSans": ["Noto Sans Thai", "sans-serif"]
+    }
   },
   plugins: [],
 };

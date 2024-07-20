@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import mongoose from "mongoose";
+import mongoose, { now } from "mongoose";
 
 const BookSchema = new mongoose.Schema(
   {
@@ -26,6 +26,11 @@ const BookSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    createdAt: {
+      type: Date,
+      default: now(),
+    },
+    updatedAt: { type: Date, default: now() },
   },
   {
     timestamps: true,

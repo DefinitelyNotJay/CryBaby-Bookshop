@@ -1,0 +1,52 @@
+[{
+  "_id": {
+    "$oid": "6699074ce290e8923134c476"
+  },
+  "name": "ครับพี่",
+  "description": "สนุก",
+  "cost": 250,
+  "author": "Tendou Souji",
+  "edition": 1,
+  "authorId": {
+    "$oid": "669904d853f60ba38ccc9bc2"
+  }
+},
+{
+  "_id": {
+    "$oid": "66991783e821002ba460b8ac"
+  },
+  "name": "ตำนานรักดอกจิก",
+  "description": "นิยายสนุกจากจีน",
+  "cost": 200,
+  "author": "Tendou Souji",
+  "edition": 2,
+  "authorId": {
+    "$oid": "669904d853f60ba38ccc9bc2"
+  }
+},
+{
+  "_id": {
+    "$oid": "6699275528d023e2ba9cb4e1"
+  },
+  "name": "กินกบตัวนั้นซะสิ",
+  "description": "สุดยอด",
+  "cost": 190,
+  "author": "Tendou Souji",
+  "edition": 4,
+  "authorId": {
+    "$oid": "669904d853f60ba38ccc9bc2"
+  }
+},
+{
+  "_id": {
+    "$oid": "669929759cf72046cec12ff8"
+  },
+  "name": "ไกรทองบุตรเทพ",
+  "description": "เท่",
+  "cost": 800,
+  "author": "Tendou Souji",
+  "edition": 1,
+  "authorId": {
+    "$oid": "669904d853f60ba38ccc9bc2"
+  }
+}]

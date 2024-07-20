@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRoute from "./routes/authRoute.js";
 import bookRoute from "./routes/bookRoute.js"
+import Book from "./models/Book.js";
+import multer from "multer";
 const app = express();
 
 const dbConnect = async () => {
@@ -14,6 +16,9 @@ const dbConnect = async () => {
     throw new Error(err);
   }
 };
+
+
+
 
 app.use(
   cors({
@@ -29,4 +34,5 @@ app.use("/api/book", bookRoute)
 
 app.listen("3000", async () => {
   dbConnect();
+  Book.createCollection()
 });

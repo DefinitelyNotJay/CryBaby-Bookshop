@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { ObjectId } from "mongodb";
+import Book from "./Book.js";
 
 const authorSchema = new Schema({
     name:{
@@ -9,11 +10,7 @@ const authorSchema = new Schema({
     },
     image: String,
     description: String,
-    books: [
-        {
-            type: ObjectId
-        }
-    ]
+    books: [typeof Book]
 })
 
 export default model("Author", authorSchema)
