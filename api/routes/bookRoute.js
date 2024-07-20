@@ -1,12 +1,11 @@
 import {Router} from "express"
-import { createBook, getAllBooks } from "../controller/book.js"
-import multer from "multer"
+import { createBook, getAllBooks, getEachBook } from "../controller/book.js"
 
 const router = Router()
-const upload = multer({dest: "public/books/"})
 
 
 router.post("/create", createBook)
 router.get("/all", getAllBooks)
+router.get("/:id", getEachBook)
 
 export default router;

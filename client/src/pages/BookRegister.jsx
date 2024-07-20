@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import BookRegisterForm from "../components/book-register-form";
-import Book from "../components/book";
+import BookList from "../components/book-list";
+import SearchBar from "../components/SearchBar";
 
 export default function BookRegister() {
   const [books, setBooks] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   async function getAllBooks() {
     await axios
@@ -32,19 +34,26 @@ export default function BookRegister() {
       </div>
       <div className="w-5/12 bg-base rounded-r-xl p-4">
         <div className="w-full h-full bg-white rounded-xl p-4 overflow-scroll ">
-          <h1 className="text-center text-xl font-semibold">
+          <h1 className="text-center text-xl font-semibold mb-4">
             หนังสือที่เพิ่มล่าสุด
           </h1>
-          <div className="grid grid-cols-2 mt-4 justify-items-end ">
-            {books?.map((book) => (
-              <Book
-                key={book.id}
-                name={book.name}
-                author={book.author}
-                cost={book.cost}
-                edition={book.edition}
-              />
-            ))}
+          <SearchBar searchText={searchText} setSearchText={setSearchText} />
+          <div className="grid grid-cols-3 mt-6 justify-items-end ">
+            {books?.map((book) => {
+              if (book.name.includes(searchText)) {
+                return (
+                  <a href={`/book/${book._id}`} key={book._id} className="hover:bg-[#333] w-full self-center">
+                    <BookList
+                      key={book._id}
+                      name={book.name}
+                      author={book.author}
+                      cost={book.cost}
+                      edition={book.edition}
+                    />
+                  </a>
+                );
+              }
+            })}
           </div>
         </div>
       </div>
