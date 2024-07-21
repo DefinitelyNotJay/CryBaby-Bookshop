@@ -23,7 +23,7 @@ export default function ManagerNavbar() {
         </button>
       </div>
       <section className="w-screen bg-tertiary mt-[72px] z-99 h-16 flex items-center gap-2 px-4">
-        <NavButton title={"หน้าหลัก"} link={"/"}/>
+        <NavButton title={"หน้าหลัก"} link={"/book-register"}/>
         <NavButton title={"โปรโมชั่น"} link={"/promotion"}/>
         <NavButton title={"พนักงาน"} link={"/staff"}/>
       </section>

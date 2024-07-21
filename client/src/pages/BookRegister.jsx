@@ -29,7 +29,7 @@ export default function BookRegister() {
           <h1 className="text-center text-xl font-semibold mb-4">
             ลงทะเบียนหนังสือ
           </h1>
-          <BookRegisterForm />
+          <BookRegisterForm bookInfo={null}/>
         </div>
       </div>
       <div className="w-5/12 bg-base rounded-r-xl p-4">
