@@ -26,11 +26,7 @@ const BookSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      default: now(),
-    },
-    updatedAt: { type: Date, default: now() },
+    description: String,
   },
   {
     timestamps: true,

@@ -2,18 +2,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import axios from "axios";
+import { useEffect } from "react";
 export default function BookRegisterForm({ bookInfo }) {
   async function bookRegister(formData) {
+    console.log(formData)
     await axios.post("http://localhost:3000/api/book/create", formData, {
       withCredentials: true,
     });
   }
 
   async function bookEdit(formData) {
-    const editData = {...formData, id: bookInfo.id}
-    await axios.post("http://localhost:3000/api/book/edit", editData, {
-      withCredentials: true,
-    });
+    console.log("form :", formData)
+    await axios
+      .post("http://localhost:3000/api/book/edit", formData, {
+        withCredentials: true,
+      })
+      .then(() => {
+        alert("แก้ไขหนังสือสำเร็จ")
+        window.location.reload();
+      });
   }
 
   const schema = z.object({
@@ -30,8 +37,17 @@ export default function BookRegisterForm({ bookInfo }) {
     handleSubmit,
     formState: { errors },
     isSubmitting,
+    setValue,
   } = useForm({
     resolver: zodResolver(schema),
+  });
+
+  useEffect(() => {
+    setValue("name", bookInfo?.name);
+    setValue("author", bookInfo?.author);
+    setValue("cost", bookInfo?.cost);
+    setValue("description", bookInfo?.description);
+    setValue("edition", bookInfo?.edition);
   });
 
   return (
@@ -46,7 +62,7 @@ export default function BookRegisterForm({ bookInfo }) {
           type="text"
           name="name"
           {...register("name")}
-          defaultValue={bookInfo?.name}
+          // defaultValue={bookInfo?.name}
         />
       </div>
       <p className="text-red-500">{errors.name && errors.name.message}</p>
@@ -56,7 +72,7 @@ export default function BookRegisterForm({ bookInfo }) {
           className="rounded-md px-2 py-1 border bg-base w-64 resize-none"
           name="description"
           {...register("description")}
-          defaultValue={bookInfo?.description}
+          // defaultValue={bookInfo?.description}
         />
       </div>
       <p className="text-red-500">
@@ -70,7 +86,7 @@ export default function BookRegisterForm({ bookInfo }) {
           accept="image/png, image/gif, image/jpeg"
           name="image"
           {...register("image")}
-          defaultValue={bookInfo?.image}
+          // defaultValue={bookInfo?.image}
         />
       </div>
       <p className="text-red-500">{errors.image && errors.image.message}</p>
@@ -81,7 +97,7 @@ export default function BookRegisterForm({ bookInfo }) {
           type="text"
           name="author"
           {...register("author")}
-          defaultValue={bookInfo?.author}
+          // defaultValue={bookInfo?.author}
         />
       </div>
       <p className="text-red-500">{errors.author && errors.author.message}</p>
@@ -92,14 +108,14 @@ export default function BookRegisterForm({ bookInfo }) {
           type="number"
           name="cost"
           {...register("cost")}
-          defaultValue={bookInfo?.cost}
+          // defaultValue={bookInfo?.cost}
         />
       </div>
       <p className="text-red-500">{errors.cost && errors.cost.message}</p>
       <div>
         <label htmlFor="">พิมพ์ครั้งที่: </label>
         <input
-          defaultValue={1}
+          // defaultValue={1}
           className="rounded-md px-2 py-1 border bg-base w-64"
           type="number"
           name="edition"

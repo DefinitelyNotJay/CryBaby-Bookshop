@@ -30,12 +30,36 @@ export async function getAllBooks(req, res, next) {
 
 export const getEachBook = async (req, res, next) => {
   const id = req.params.id;
-  console.log(id)
   try {
     const bookDoc = await Book.findById(id);
-    console.log(bookDoc);
+    // console.log(bookDoc);
     res.status(200).json(bookDoc);
   } catch (err) {
     next(createError("500", err));
   }
+};
+
+export const editBook = async (req, res, next) => {
+  const { id, image, ...updateData } = req.body;
+  updateData.image = "";
+  try {
+    const updatedBook = await Book.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          name: updateData.name,
+          cost: updateData.cost,
+          author: updateData.author,
+          description: updateData.description,
+          image: updateData.image,
+          edition: updateData.edition,
+        },
+      }
+    );
+    // console.log(updatedBook)
+  } catch (err) {
+    console.log(err)
+    next(createError("500", err));
+  }
+  res.status(200).json(updateData);
 };
