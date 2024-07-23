@@ -5,32 +5,34 @@ import axios from "axios";
 import { useEffect } from "react";
 export default function BookRegisterForm({ bookInfo }) {
   async function bookRegister(formData) {
-    console.log(formData)
     await axios.post("http://localhost:3000/api/book/create", formData, {
       withCredentials: true,
     });
   }
 
   async function bookEdit(formData) {
-    console.log("form :", formData)
     await axios
-      .post("http://localhost:3000/api/book/edit", formData, {
-        withCredentials: true,
-      })
+      .post(
+        "http://localhost:3000/api/book/edit",
+        { ...formData, id: bookInfo?.id },
+        {
+          withCredentials: true,
+        }
+      )
       .then(() => {
-        alert("แก้ไขหนังสือสำเร็จ")
+        alert("แก้ไขหนังสือสำเร็จ");
         window.location.reload();
       });
   }
 
-  const schema = z.object({
+  const createBookSchema = z.object({
     name: z.string().max(50),
     description: z.string().nullable(),
     cost: z.coerce.number().min(1),
     author: z.string(),
     edition: z.coerce.number(),
     imageSrc: z.string(),
-    category: z.string()
+    category: z.string(),
   });
 
   const {
@@ -40,7 +42,7 @@ export default function BookRegisterForm({ bookInfo }) {
     isSubmitting,
     setValue,
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(createBookSchema),
   });
 
   useEffect(() => {
@@ -49,12 +51,15 @@ export default function BookRegisterForm({ bookInfo }) {
     setValue("cost", bookInfo?.cost);
     setValue("description", bookInfo?.description);
     setValue("edition", bookInfo?.edition);
+    setValue("category", bookInfo?.category);
+    setValue("imageSrc", bookInfo?.imageSrc);
   });
 
   return (
     <form
       onSubmit={handleSubmit(bookInfo ? bookEdit : bookRegister)}
       className="ml-52 flex flex-col gap-2 w-7/12"
+      // onClick={()=>{console.log(bookInfo.id)}}
     >
       <div>
         <label htmlFor="">ชื่อหนังสือ: </label>

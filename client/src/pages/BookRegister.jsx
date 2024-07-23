@@ -42,7 +42,7 @@ export default function BookRegister() {
             {books?.map((book) => {
               if (book.name.includes(searchText)) {
                 return (
-                  <a href={`/book/${book._id}`} key={book._id} className="hover:bg-[#333] w-full self-center">
+                  <a href={`/book/${book.id}`} key={book.id} className="hover:bg-[#333] w-full self-center">
                     <BookList
                       key={book._id}
                       name={book.name}

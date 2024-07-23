@@ -6,12 +6,13 @@ import BookRegisterForm from "../components/book-register-form";
 export default function Book() {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   async function getBookData() {
     await axios
       .get(`http://localhost:3000/api/book/${id}`, { withCredentials: true })
-      .then((data) => {
-        setData(data.data);
+      .then((res) => {
+        const data = res.data;
+        setData({ ...data, id: id });
       });
   }
   useEffect(() => {
