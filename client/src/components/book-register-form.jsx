@@ -29,7 +29,8 @@ export default function BookRegisterForm({ bookInfo }) {
     cost: z.coerce.number().min(1),
     author: z.string(),
     edition: z.coerce.number(),
-    image: z.any(),
+    imageSrc: z.string(),
+    category: z.string()
   });
 
   const {
@@ -82,10 +83,19 @@ export default function BookRegisterForm({ bookInfo }) {
         <label htmlFor="">รูปภาพ: </label>
         <input
           className="rounded-md py-1 px-2 border bg-base"
-          type="file"
-          accept="image/png, image/gif, image/jpeg"
-          name="image"
-          {...register("image")}
+          type="string"
+          name="imageSrc"
+          {...register("imageSrc")}
+          // defaultValue={bookInfo?.image}
+        />
+      </div>
+      <div>
+        <label htmlFor="">ประเภท: </label>
+        <input
+          className="rounded-md py-1 px-2 border bg-base"
+          type="string"
+          name="category"
+          {...register("category")}
           // defaultValue={bookInfo?.image}
         />
       </div>

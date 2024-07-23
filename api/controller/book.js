@@ -1,18 +1,28 @@
+import { connect } from "http2";
 import Author from "../models/Author.js";
 import Book from "../models/Book.js";
 import { createError } from "../utils/error.js";
-import { ObjectId } from "mongodb";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export async function createBook(req, res, next) {
   const formData = req.body;
-  console.log(formData);
+  formData.rating = 0;
+  console.log(formData)
   try {
-    const authorDoc = await Author.collection.findOneAndUpdate(
-      { name: formData.author },
-      { $push: { books: formData } }
-    );
-    await Book.collection.insertOne({ ...formData, authorId: authorDoc._id });
+    const authorDoc = await prisma.author.findFirst({
+      where: {
+        name: formData.author,
+      },
+    });
+    const newBook = await prisma.book.create({ data: { ...formData, author:{
+      connect: {
+        id: authorDoc.id
+      }
+    } } });
   } catch (err) {
+    console.log(err)
     next(createError("500", err));
   }
   res.status(200);
@@ -20,8 +30,8 @@ export async function createBook(req, res, next) {
 }
 
 export async function getAllBooks(req, res, next) {
-  const books = await Book.find({}, {}).sort({ createdAt: -1 });
-  // console.log(books);
+  const books = await prisma.book.findMany();
+  console.log(books);
   if (!books) {
     next(createError("500", "No books!"));
   }
@@ -58,7 +68,7 @@ export const editBook = async (req, res, next) => {
     );
     // console.log(updatedBook)
   } catch (err) {
-    console.log(err)
+    console.log(err);
     next(createError("500", err));
   }
   res.status(200).json(updateData);

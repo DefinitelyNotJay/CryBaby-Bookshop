@@ -9,12 +9,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Book {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  id          String  @id @default(uuid())
   name        String
   cost        Float
   category    String
@@ -22,19 +22,20 @@ model Book {
   description String?
   imageSrc    String?
   author      Author  @relation(fields: [authorId], references: [id])
-  authorId    String  @db.ObjectId
+  authorId    String
+  edition     Int? @default(1)
 }
 
 model Author {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
+  id          String  @id @default(uuid())
+  name        String  @unique
   imageSrc    String?
   description String?
   books       Book[]
 }
 
 model User {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  id       String  @id @default(uuid())
   username String
   email    String
   password String
