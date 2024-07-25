@@ -2,14 +2,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import SelectedCategory from "./select-category";
 export default function BookRegisterForm({ bookInfo }) {
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  // create book
   async function bookRegister(formData) {
+    formData.category = categories.map((category) => category.value);
+    console.log(formData);
     await axios.post("http://localhost:3000/api/book/create", formData, {
       withCredentials: true,
     });
   }
 
+  // edit book
   async function bookEdit(formData) {
     await axios
       .post(
@@ -25,6 +33,27 @@ export default function BookRegisterForm({ bookInfo }) {
       });
   }
 
+  async function getCategoryOptions() {
+    console.log(1);
+    await axios
+      .get("http://localhost:3000/api/book/categories", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setCategories(res.data);
+      });
+  }
+
+  function setEditData() {
+    setValue("name", bookInfo?.name);
+    setValue("author", bookInfo?.author);
+    setValue("cost", bookInfo?.cost);
+    setValue("description", bookInfo?.description);
+    setValue("edition", bookInfo?.edition);
+    setValue("category", bookInfo?.category);
+    setValue("imageSrc", bookInfo?.imageSrc);
+  }
+
   const createBookSchema = z.object({
     name: z.string().max(50),
     description: z.string().nullable(),
@@ -32,7 +61,7 @@ export default function BookRegisterForm({ bookInfo }) {
     author: z.string(),
     edition: z.coerce.number(),
     imageSrc: z.string(),
-    category: z.string(),
+    category: z.any(),
   });
 
   const {
@@ -46,14 +75,9 @@ export default function BookRegisterForm({ bookInfo }) {
   });
 
   useEffect(() => {
-    setValue("name", bookInfo?.name);
-    setValue("author", bookInfo?.author);
-    setValue("cost", bookInfo?.cost);
-    setValue("description", bookInfo?.description);
-    setValue("edition", bookInfo?.edition);
-    setValue("category", bookInfo?.category);
-    setValue("imageSrc", bookInfo?.imageSrc);
-  });
+    setEditData();
+    getCategoryOptions();
+  }, []);
 
   return (
     <form
@@ -96,13 +120,52 @@ export default function BookRegisterForm({ bookInfo }) {
       </div>
       <div>
         <label htmlFor="">ประเภท: </label>
-        <input
+        {/* <input
           className="rounded-md py-1 px-2 border bg-base"
           type="string"
           name="category"
           {...register("category")}
           // defaultValue={bookInfo?.image}
-        />
+        /> */}
+        <select
+          name="category"
+          {...register("category")}
+          className="px-4 py-1 bg-base rounded-lg"
+          onChange={(ev) => {
+            setSelectedCategories((prev) => {
+              if (
+                ev.target.value === "" ||
+                selectedCategories.includes(ev.target.value)
+              )
+                return prev;
+              return [...prev, ev.target.value];
+            });
+          }}
+        >
+          <option selected value="">
+            เลือกประเภท
+          </option>
+          {categories &&
+            categories.map((category) => (
+              <option
+                key={category.id}
+                value={category.value}
+                className="font-base"
+              >
+                {category.name}
+              </option>
+            ))}
+        </select>
+        <div className="flex mt-3 gap-2">
+          {selectedCategories &&
+            selectedCategories.map((category) => (
+              <SelectedCategory
+                key={category}
+                title={category}
+                setSelectedCategories={setSelectedCategories}
+              />
+            ))}
+        </div>
       </div>
       <p className="text-red-500">{errors.image && errors.image.message}</p>
       <div>

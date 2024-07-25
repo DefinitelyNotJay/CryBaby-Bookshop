@@ -8,16 +8,6 @@ import Book from "./models/Book.js";
 import multer from "multer";
 const app = express();
 
-const dbConnect = async () => {
-  try {
-    await mongoose.connect("mongodb://localhost/crybaby");
-    console.log("server is running");
-  } catch (err) {
-    throw new Error(err);
-  }
-};
-
-
 
 
 app.use(
@@ -33,6 +23,4 @@ app.use("/api/auth", authRoute);
 app.use("/api/book", bookRoute)
 
 app.listen("3000", async () => {
-  dbConnect();
-  Book.createCollection()
 });

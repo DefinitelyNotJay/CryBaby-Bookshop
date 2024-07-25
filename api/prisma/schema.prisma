@@ -8,22 +8,27 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
+
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Book {
-  id          String  @id @default(uuid())
+  id          String              @id @default(uuid())
   name        String
   cost        Float
-  category    String
+  categories  CategoriesOnBooks[]
   rating      Int
   description String?
   imageSrc    String?
-  author      Author  @relation(fields: [authorId], references: [id])
+  author      Author              @relation(fields: [authorId], references: [id])
   authorId    String
-  edition     Int? @default(1)
+  edition     Int?                @default(1)
 }
 
 model Author {
@@ -41,4 +46,20 @@ model User {
   password String
   role     String
   imageSrc String?
+}
+
+model Category {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique
+  value             String              @unique
+  CategoriesOnBooks CategoriesOnBooks[]
+}
+
+model CategoriesOnBooks {
+  id         Int      @id @default(autoincrement())
+  book       Book     @relation(fields: [bookId], references: [id])
+  bookId     String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  createdAt  DateTime @default(now())
 }

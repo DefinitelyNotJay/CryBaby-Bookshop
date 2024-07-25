@@ -44,7 +44,7 @@ export default function BookRegister() {
                 return (
                   <a href={`/book/${book.id}`} key={book.id} className="hover:bg-[#333] w-full self-center">
                     <BookList
-                      key={book._id}
+                      key={book.id}
                       name={book.name}
                       author={book.author}
                       cost={book.cost}

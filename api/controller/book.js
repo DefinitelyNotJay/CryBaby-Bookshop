@@ -8,25 +8,50 @@ const prisma = new PrismaClient();
 
 export async function createBook(req, res, next) {
   const formData = req.body;
+  // console.log(formData.category)
   formData.rating = 0;
 
   try {
+    // find authorId
     const authorDoc = await prisma.author.findFirst({
       where: {
         name: formData.author,
       },
     });
+    // get all categories id
+    const categories = await prisma.category.findMany({
+      where: {
+        value: { in: formData.category },
+      },
+    });
+    // create category connect object
+    const categoriesOnBooks = categories.map((category) => ({
+      category: {
+        connect: {
+          id: category.id,
+        },
+      },
+    }));
+
+    console.log(categoriesOnBooks);
+
+    // create book
+    const {author, category, ...createBookData} = formData;
     const newBook = await prisma.book.create({
       data: {
-        ...formData,
+        ...createBookData,
         author: {
           connect: {
             id: authorDoc.id,
           },
         },
+        categories: {
+          create: categoriesOnBooks,
+        },
       },
     });
   } catch (err) {
+    console.log(err);
     next(createError("500", err));
   }
   res.status(200);
@@ -85,4 +110,14 @@ export const editBook = async (req, res, next) => {
     next(createError("500", err));
   }
   res.status(200).json(updateData);
+};
+
+export const getCategories = async (req, res, next) => {
+  try {
+    const categories = await prisma.category.findMany();
+    res.status(200).json(categories);
+  } catch (err) {
+    console.log(err);
+    next(createError(404, "Category is empty!"));
+  }
 };
