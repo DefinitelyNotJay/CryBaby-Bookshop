@@ -28,7 +28,6 @@ export default function BookEditForm() {
   } = useForm({
     resolver: zodResolver(editBookSchema),
     defaultValues: async () => {
-      console.log(id);
       const data = await axios.get(`http://localhost:3000/api/book/${id}`);
       const { data: bookData } = data;
       setBookInfo(bookData);
@@ -44,6 +43,7 @@ export default function BookEditForm() {
   });
 
   async function bookEdit(formData) {
+    formData.category = selectedCategories;
     await axios
       .post(
         "http://localhost:3000/api/book/edit",
@@ -69,6 +69,7 @@ export default function BookEditForm() {
   }
 
   useEffect(() => {
+    console.log(selectedCategories)
     getCategoryOptions();
     setSelectedCategories(bookInfo?.categories);
   }, [bookInfo]);

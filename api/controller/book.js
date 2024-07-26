@@ -33,8 +33,6 @@ export async function createBook(req, res, next) {
       },
     }));
 
-    console.log(categoriesOnBooks);
-
     // create book
     const { author, category, ...createBookData } = formData;
     const newBook = await prisma.book.create({
@@ -101,25 +99,46 @@ export const getEachBook = async (req, res, next) => {
 
 export const editBook = async (req, res, next) => {
   const { id, ...updateData } = req.body;
-  console.log(req.body);
+
   try {
     const author = await prisma.author.findFirst({
       where: { name: updateData.author },
     });
-    const updatedBook = await prisma.book.update({
-      where: { id: id },
-      data: {
-        ...updateData,
-        author: {
-          connect: {
-            id: author.id,
+
+    // get category id from category
+    const categories = await prisma.category.findMany({
+      where: { value: { in: updateData.category } },
+    });
+
+    const deletedCategoriesFromBook = await prisma.categoriesOnBooks.deleteMany(
+      { where: { bookId: id } }
+    );
+
+    if (!deletedCategoriesFromBook) {
+      next(createError(404, "Categories not found!"));
+    }
+
+    const categoriesIds = categories.map((category) => category.id);
+
+    categoriesIds.map(async (categoryId) => {
+      await prisma.categoriesOnBooks.create({
+        data: {
+          book: {
+            connect: {
+              id: id,
+            },
+          },
+          category: {
+            connect: {
+              id: categoryId,
+            },
           },
         },
-      },
+      });
     });
-    //
+
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     next(createError("500", err));
   }
   res.status(200).json(updateData);
