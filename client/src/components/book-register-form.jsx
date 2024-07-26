@@ -4,55 +4,9 @@ import z from "zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import SelectedCategory from "./select-category";
-export default function BookRegisterForm({ bookInfo }) {
+export default function BookRegisterForm() {
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-
-  // create book
-  async function bookRegister(formData) {
-    formData.category = categories.map((category) => category.value);
-    console.log(formData);
-    await axios.post("http://localhost:3000/api/book/create", formData, {
-      withCredentials: true,
-    });
-  }
-
-  // edit book
-  async function bookEdit(formData) {
-    await axios
-      .post(
-        "http://localhost:3000/api/book/edit",
-        { ...formData, id: bookInfo?.id },
-        {
-          withCredentials: true,
-        }
-      )
-      .then(() => {
-        alert("แก้ไขหนังสือสำเร็จ");
-        window.location.reload();
-      });
-  }
-
-  async function getCategoryOptions() {
-    console.log(1);
-    await axios
-      .get("http://localhost:3000/api/book/categories", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        setCategories(res.data);
-      });
-  }
-
-  function setEditData() {
-    setValue("name", bookInfo?.name);
-    setValue("author", bookInfo?.author);
-    setValue("cost", bookInfo?.cost);
-    setValue("description", bookInfo?.description);
-    setValue("edition", bookInfo?.edition);
-    setValue("category", bookInfo?.category);
-    setValue("imageSrc", bookInfo?.imageSrc);
-  }
 
   const createBookSchema = z.object({
     name: z.string().max(50),
@@ -69,21 +23,41 @@ export default function BookRegisterForm({ bookInfo }) {
     handleSubmit,
     formState: { errors },
     isSubmitting,
-    setValue,
   } = useForm({
     resolver: zodResolver(createBookSchema),
   });
 
+  // create book
+  async function bookRegister(formData) {
+    formData.category = selectedCategories
+    console.log("final form:", formData)
+    await axios.post("http://localhost:3000/api/book/create", formData, {
+      withCredentials: true,
+    })
+    .then(res => {
+        window.location.reload()
+    });
+  }
+
+  async function getCategoryOptions() {
+    await axios
+      .get("http://localhost:3000/api/book/categories", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setCategories(res.data);
+      });
+  }
+
   useEffect(() => {
-    setEditData();
     getCategoryOptions();
-  }, []);
+    console.log(selectedCategories)
+  }, [selectedCategories]);
 
   return (
     <form
-      onSubmit={handleSubmit(bookInfo ? bookEdit : bookRegister)}
-      className="ml-52 flex flex-col gap-2 w-7/12"
-      // onClick={()=>{console.log(bookInfo.id)}}
+      onSubmit={handleSubmit(bookRegister)}
+      className="ml-52 flex flex-col gap-2 w-full"
     >
       <div>
         <label htmlFor="">ชื่อหนังสือ: </label>
@@ -92,7 +66,6 @@ export default function BookRegisterForm({ bookInfo }) {
           type="text"
           name="name"
           {...register("name")}
-          // defaultValue={bookInfo?.name}
         />
       </div>
       <p className="text-red-500">{errors.name && errors.name.message}</p>
@@ -102,7 +75,6 @@ export default function BookRegisterForm({ bookInfo }) {
           className="rounded-md px-2 py-1 border bg-base w-64 resize-none"
           name="description"
           {...register("description")}
-          // defaultValue={bookInfo?.description}
         />
       </div>
       <p className="text-red-500">
@@ -115,18 +87,10 @@ export default function BookRegisterForm({ bookInfo }) {
           type="string"
           name="imageSrc"
           {...register("imageSrc")}
-          // defaultValue={bookInfo?.image}
         />
       </div>
       <div>
         <label htmlFor="">ประเภท: </label>
-        {/* <input
-          className="rounded-md py-1 px-2 border bg-base"
-          type="string"
-          name="category"
-          {...register("category")}
-          // defaultValue={bookInfo?.image}
-        /> */}
         <select
           name="category"
           {...register("category")}
@@ -156,7 +120,7 @@ export default function BookRegisterForm({ bookInfo }) {
               </option>
             ))}
         </select>
-        <div className="flex mt-3 gap-2">
+        <div className="flex mt-2 gap-2">
           {selectedCategories &&
             selectedCategories.map((category) => (
               <SelectedCategory
@@ -175,7 +139,6 @@ export default function BookRegisterForm({ bookInfo }) {
           type="text"
           name="author"
           {...register("author")}
-          // defaultValue={bookInfo?.author}
         />
       </div>
       <p className="text-red-500">{errors.author && errors.author.message}</p>
@@ -186,14 +149,12 @@ export default function BookRegisterForm({ bookInfo }) {
           type="number"
           name="cost"
           {...register("cost")}
-          // defaultValue={bookInfo?.cost}
         />
       </div>
       <p className="text-red-500">{errors.cost && errors.cost.message}</p>
       <div>
         <label htmlFor="">พิมพ์ครั้งที่: </label>
         <input
-          // defaultValue={1}
           className="rounded-md px-2 py-1 border bg-base w-64"
           type="number"
           name="edition"

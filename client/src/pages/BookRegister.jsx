@@ -23,7 +23,7 @@ export default function BookRegister() {
   }, []);
 
   return (
-    <section className="w-full flex  p-12 h-[calc(100vh-144px)]">
+    <section className="w-full flex  p-12 ">
       <div className="w-7/12 bg-base h-full p-4 rounded-l-xl">
         <div className="w-full h-full bg-white rounded-xl p-4">
           <h1 className="text-center text-xl font-semibold mb-4">

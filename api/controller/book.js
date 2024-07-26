@@ -36,7 +36,7 @@ export async function createBook(req, res, next) {
     console.log(categoriesOnBooks);
 
     // create book
-    const {author, category, ...createBookData} = formData;
+    const { author, category, ...createBookData } = formData;
     const newBook = await prisma.book.create({
       data: {
         ...createBookData,
@@ -70,17 +70,30 @@ export async function getAllBooks(req, res, next) {
 export const getEachBook = async (req, res, next) => {
   const id = req.params.id;
   try {
+    // join ไปที่ bridge ก่อนแล้วค่อย join ไปที่ category
     const bookDoc = await prisma.book.findFirst({
       where: {
         id: id,
       },
       include: {
         author: true,
+        categories: {
+          include: {
+            category: true,
+          },
+        },
       },
     });
-    const { author } = bookDoc;
+    const { author, categories } = bookDoc;
 
-    res.status(200).json({ ...bookDoc, author: author.name });
+    // แปลงให้เป็น array of string
+    const category = categories
+      .map((category) => category.category)
+      .map((categoryData) => categoryData.value);
+
+    res
+      .status(200)
+      .json({ ...bookDoc, author: author.name, categories: category });
   } catch (err) {
     next(createError("500", err));
   }

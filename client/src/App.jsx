@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import ManagerNavbar from './components/manager-navbar'
 import BookRegister from './pages/BookRegister'
 import Book from './pages/Book'
+import Popo from './pages/Popo'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
       <Route path='/register' element={<Register/>}/>
       <Route path='/book-register' element={<BookRegister/>}/>
       <Route path='/book/:id' element={<Book/>}/>
+      <Route path='/popo' element={<Popo/>}/>
       </Route>
      </Routes>
     </div>
