@@ -1,8 +1,9 @@
 import axios from "axios";
 import NavButton from "./NavButton";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 
 export default function ManagerNavbar() {
+  const location = useLocation()
   const logoutHandler = async () => {
     await axios.get("http://localhost:3000/api/auth/logout", {
       withCredentials: true,
@@ -25,7 +26,7 @@ export default function ManagerNavbar() {
         </button>
       </div>
       <section className="w-screen bg-tertiary mt-[72px] z-99 h-16 flex items-center gap-2 px-4">
-        <NavButton title={"หน้าหลัก"} link={"/book-register"} />
+        <NavButton title={"หน้าหลัก"} link={"/book-register"} name={"book-register"}/>
         <NavButton title={"โปรโมชั่น"} link={"/promotion"} />
         <NavButton title={"พนักงาน"} link={"/staff"} />
       </section>
