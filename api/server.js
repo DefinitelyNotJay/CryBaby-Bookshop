@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRoute from "./routes/authRoute.js";
 import bookRoute from "./routes/bookRoute.js"
+import { verifyLogin } from "./controller/auth.js";
 import Book from "./models/Book.js";
 import multer from "multer";
 

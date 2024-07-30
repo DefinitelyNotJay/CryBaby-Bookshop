@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import SelectedCategory from "./select-category";
+import SelectedCategory from "./SelectCategory";
 const id = location.pathname.split("/")[2] || undefined;
 export default function BookEditForm() {
   const [bookInfo, setBookInfo] = useState({});
@@ -69,7 +69,6 @@ export default function BookEditForm() {
   }
 
   useEffect(() => {
-    console.log(selectedCategories)
     getCategoryOptions();
     setSelectedCategories(bookInfo?.categories);
   }, [bookInfo]);

@@ -30,7 +30,9 @@ export default function Register() {
             className="rounded-md px-2 py-1 mb-2"
             {...register("username")}
           />
-          <p className="text-red-500">{errors.username && errors.username.message}</p>
+          <p className="text-red-500">
+            {errors.username && errors.username.message}
+          </p>
         </div>
         <div className="flex flex-col ">
           <label htmlFor="">อีเมลล์</label>
@@ -41,6 +43,16 @@ export default function Register() {
             className="rounded-md px-2 py-1 mb-2"
             {...register("email")}
           />
+          <p className="text-red-500">{errors.email && errors.email.message}</p>
+        </div>
+        <div className="flex flex-col ">
+          <label htmlFor="">ตำแหน่ง</label>
+          <select placeholder="เลือกตำแหน่ง" {...register("role")} className="rounded-md px-2 py-1 mb-2" name="role">
+            <option value="bookseller">พนักงานขายหนังสือ</option>
+            <option value="cashier">แคชเชียร์</option>
+            <option value="manager">ผู้จัดการ</option>
+            <option value="assistant">ผู้ช่วยผู้จัดการ</option>
+          </select>
           <p className="text-red-500">{errors.email && errors.email.message}</p>
         </div>
         <div className="flex flex-col ">
@@ -55,17 +67,6 @@ export default function Register() {
           <p className="text-red-500">
             {errors.password && errors.password.message}
           </p>
-        </div>
-        <div className="flex flex-col ">
-          <label htmlFor="">ตำแหน่ง</label>
-          <input
-            type="text"
-            placeholder="role"
-            name="role"
-            className="rounded-md px-2 py-1 mb-2"
-            {...register("role")}
-          />
-          <p className="text-red-500">{errors.role && errors.role.message}</p>
         </div>
         <button
           type="submit"

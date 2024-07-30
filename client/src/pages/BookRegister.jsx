@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import BookRegisterForm from "../components/book-register-form";
-import BookList from "../components/book-list";
+import BookRegisterForm from "../components/BookRegisterForm";
+import BookList from "../components/BookList";
 import SearchBar from "../components/SearchBar";
 
 export default function BookRegister() {
@@ -21,10 +21,9 @@ export default function BookRegister() {
   useEffect(() => {
     getAllBooks();
   }, []);
-
   return (
-    <section className="w-full flex  p-12 ">
-      <div className="w-7/12 bg-base h-full p-4 rounded-l-xl">
+    <section className="w-full flex p-12">
+      <div className="w-7/12 bg-base h-[512px] p-4 rounded-l-xl">
         <div className="w-full h-full bg-white rounded-xl p-4">
           <h1 className="text-center text-xl font-semibold mb-4">
             ลงทะเบียนหนังสือ
@@ -32,13 +31,13 @@ export default function BookRegister() {
           <BookRegisterForm bookInfo={null}/>
         </div>
       </div>
-      <div className="w-5/12 bg-base rounded-r-xl p-4">
-        <div className="w-full h-full bg-white rounded-xl p-4 overflow-scroll ">
+      <div className="w-5/12 bg-base h-4/6 overflow-scroll rounded-r-xl p-4">
+        <div className="w-full  bg-white rounded-xl p-4 ">
           <h1 className="text-center text-xl font-semibold mb-4">
             หนังสือที่เพิ่มล่าสุด
           </h1>
           <SearchBar searchText={searchText} setSearchText={setSearchText} />
-          <div className="grid grid-cols-3 mt-6 justify-items-end ">
+          <div className="grid grid-cols-3 mt-6 justify-items-end">
             {books?.map((book) => {
               if (book.name.includes(searchText)) {
                 return (

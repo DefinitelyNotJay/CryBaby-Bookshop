@@ -7,6 +7,8 @@ import {
   getCategories,
 } from "../controller/book.js";
 
+import { verifyLogin } from "../controller/auth.js";
+
 const router = Router();
 
 router.get("/categories", getCategories);

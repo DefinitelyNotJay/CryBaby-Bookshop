@@ -2,10 +2,12 @@ import './App.css'
 import {Routes, Route} from "react-router-dom"
 import Register from './pages/Register'
 import Login from './pages/Login'
-import ManagerNavbar from './components/manager-navbar'
+import ManagerNavbar from './components/ManagerNavbar'
 import BookRegister from './pages/BookRegister'
 import Book from './pages/Book'
 import Popo from './pages/Popo'
+import CustomerNavbar from './components/CustomerNavbar'
+import Home from './pages/customer/Home'
 
 function App() {
 
@@ -18,6 +20,9 @@ function App() {
       <Route path='/book-register' element={<BookRegister/>}/>
       <Route path='/book/:id' element={<Book/>}/>
       <Route path='/popo' element={<Popo/>}/>
+      </Route>
+      <Route path='/' element={<CustomerNavbar/>}>
+        <Route path='/home' element={<Home/>}/>
       </Route>
      </Routes>
     </div>

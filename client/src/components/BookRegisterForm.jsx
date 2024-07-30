@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import SelectedCategory from "./select-category";
+import SelectedCategory from "./SelectCategory";
 export default function BookRegisterForm() {
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -57,7 +57,7 @@ export default function BookRegisterForm() {
   return (
     <form
       onSubmit={handleSubmit(bookRegister)}
-      className="ml-52 flex flex-col gap-2 w-full"
+      className="ml-52 flex flex-col gap-2 w-full h-full"
     >
       <div>
         <label htmlFor="">ชื่อหนังสือ: </label>

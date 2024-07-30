@@ -1,4 +1,4 @@
-import BookEditForm from "../components/book-edit-form";
+import BookEditForm from "../components/BookEditForm";
 export default function Book() {
   return (
     <div className="h-full w-screen p-14">
