@@ -10,6 +10,8 @@ export async function createBook(req, res, next) {
   const formData = req.body;
   // console.log(formData.category)
   formData.rating = 0;
+  formData.imageSrc = "";
+  console.log(formData)
 
   try {
     // find authorId
@@ -34,7 +36,7 @@ export async function createBook(req, res, next) {
     }));
 
     // create book
-    const { author, category, ...createBookData } = formData;
+    const { author, image, category, ...createBookData } = formData;
     const newBook = await prisma.book.create({
       data: {
         ...createBookData,
@@ -53,7 +55,7 @@ export async function createBook(req, res, next) {
     next(createError("500", err));
   }
   res.status(200);
-  // next({image: formData.image})
+  next();
 }
 
 export async function getAllBooks(req, res, next) {

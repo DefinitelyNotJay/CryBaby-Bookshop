@@ -29,6 +29,7 @@ model Book {
   author      Author              @relation(fields: [authorId], references: [id])
   authorId    String
   edition     Int?                @default(1)
+  created_at  DateTime?           @default(now())
 }
 
 model Author {

@@ -22,7 +22,7 @@ export default function BookRegister() {
     getAllBooks();
   }, []);
   return (
-    <section className="w-full flex p-12">
+    <section className="w-full flex p-12 h-[calc(100vh-148px)]">
       <div className="w-7/12 bg-base h-[512px] p-4 rounded-l-xl">
         <div className="w-full h-full bg-white rounded-xl p-4">
           <h1 className="text-center text-xl font-semibold mb-4">
@@ -31,8 +31,8 @@ export default function BookRegister() {
           <BookRegisterForm bookInfo={null}/>
         </div>
       </div>
-      <div className="w-5/12 bg-base h-4/6 overflow-scroll rounded-r-xl p-4">
-        <div className="w-full  bg-white rounded-xl p-4 ">
+      <div className="w-5/12 bg-base rounded-r-xl p-4 h-[512px] overflow-scroll">
+        <div className="w-full  bg-white rounded-xl p-4">
           <h1 className="text-center text-xl font-semibold mb-4">
             หนังสือที่เพิ่มล่าสุด
           </h1>

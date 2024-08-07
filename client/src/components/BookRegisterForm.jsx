@@ -7,6 +7,7 @@ import SelectedCategory from "./SelectCategory";
 export default function BookRegisterForm() {
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [image, setImage] = useState(null);
 
   const createBookSchema = z.object({
     name: z.string().max(50),
@@ -14,6 +15,7 @@ export default function BookRegisterForm() {
     cost: z.coerce.number().min(1),
     author: z.string(),
     edition: z.coerce.number(),
+    image: z.any(),
     imageSrc: z.string(),
     category: z.any(),
   });
@@ -29,14 +31,15 @@ export default function BookRegisterForm() {
 
   // create book
   async function bookRegister(formData) {
-    formData.category = selectedCategories
-    console.log("final form:", formData)
-    await axios.post("http://localhost:3000/api/book/create", formData, {
-      withCredentials: true,
-    })
-    .then(res => {
-        window.location.reload()
-    });
+    formData.category = selectedCategories;
+    formData.image = image;
+    await axios
+      .post("http://localhost:3000/api/book/create", formData, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        window.location.reload();
+      });
   }
 
   async function getCategoryOptions() {
@@ -51,7 +54,7 @@ export default function BookRegisterForm() {
 
   useEffect(() => {
     getCategoryOptions();
-    console.log(selectedCategories)
+    console.log(selectedCategories);
   }, [selectedCategories]);
 
   return (
@@ -86,7 +89,19 @@ export default function BookRegisterForm() {
           className="rounded-md py-1 px-2 border bg-base"
           type="string"
           name="imageSrc"
+          onChange={(ev) => {
+            setImage(ev.target.files[0]);
+          }}
           {...register("imageSrc")}
+        />
+      </div>
+      <div>
+        <label htmlFor="">รูปภาพ: </label>
+        <input
+          className="rounded-md py-1 px-2 border bg-base"
+          type="file"
+          name="image"
+          {...register("image")}
         />
       </div>
       <div>
